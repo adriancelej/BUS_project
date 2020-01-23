@@ -16,9 +16,7 @@ class Network:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def receive(self):
-        conn, address = self.sock.accept()
-        data = conn.recv(1024)
-        return data
+        return self.sock.recv(1024)
 
     def send(self, msg):
         self.sock.connect((self.HOST, self.BANK_PORT))
@@ -29,13 +27,9 @@ class Server:
 
     def proces_request(self, reqest):
         print(reqest)
-        ##json.loads(reqest)
 
     def listen(self, msg):
         self.network.send(msg)
-        self.network.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.network.sock.bind((self.network.HOST, self.network.CLIENT_PORT))
-        self.network.sock.listen()
         return self.network.receive()
 
 class AuthReq:
