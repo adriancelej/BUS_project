@@ -32,23 +32,38 @@ class Server:
         self.network.send(msg)
         return self.network.receive()
 
+
 class AuthReq:
     IDc = None
     Oc = None
     hash_Oc_Kc = None
+
     def __init__(self, id, oc, hash):
         self.IDc = id
         self.Oc = oc
         self.hash_Oc_Kc = hash
+
 
 class SecondMessage:
     encrypted_token_rt = None
     N = None
     hash = None
 
+
 class Token_RT:
     encrypted_Token = None
     RT = None
+
+
+class ThirdMessage:
+    w = None
+    N = None
+    hash = None
+
+    def __init__(self, w, N, hash):
+        self.w = w
+        self.N = N
+        self.hash = hash
 
 
 class Client:
@@ -103,6 +118,24 @@ class Client:
 
         if self.checkHash(tk.encrypted_Token, msg.N, msg.hash):
             print("Klient wysłał pieniądze")
+
+    def hashW(self, w):
+        digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+        digest.update(bytes(w))
+        hashed = digest.finalize()
+        return hashed
+
+    def send_w_to_merchant(self, i, IDm, n):
+        w = self.token
+        for x in range(n - i):
+            w = self.hashW(w)
+
+        digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+        digest.update(bytes(str(w) + str(IDm) + str(self.Kc)))
+        hashed = digest.finalize()
+
+        msg = ThirdMessage(w, self.N, hashed)
+        pickle.dumps(msg)
 
 
 
