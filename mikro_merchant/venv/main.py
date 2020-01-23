@@ -39,6 +39,10 @@ class Message_from_client:
     w = None
     N = None
     hash = None
+    def __init__(self, w, N, hash):
+        self.w = w
+        self.N = N
+        self.hash = hash
 
 
 class Message_to_B:
@@ -48,6 +52,14 @@ class Message_to_B:
     IDm = None
     Rm = None
     Proof = None
+    def __init__(self, w, N, IDc, IDm, Rm, Proof):
+        self.w = w
+        self.N = N
+        self.IDc = IDc
+        self.IDm = IDm
+        self.Rm = Rm
+        self.Proof = Proof
+
 
 
 class Message_from_B:
@@ -56,6 +68,11 @@ class Message_from_B:
     IDm = None
     ans = None
     hash = None
+    def __init__(self, w, IDc, IDm, ans, hash):
+        self.w = w
+        self.IDc = IDc
+        self.ans = ans
+        self.hash = hash
 
 
 class Confirmation_message:
@@ -63,6 +80,11 @@ class Confirmation_message:
     N = None
     IDm = None
     hash = None
+    def __init__(self, w, N, IDm, hash):
+        self.w = w
+        self.N = N
+        self.IDm = IDm
+        self.hash = hash
 
 
 class Merchant:
@@ -81,17 +103,17 @@ class Merchant:
         self.proofs.append(msg.hash)
 
     def send_w0_to_b(self, IDc):
-        message = Message_to_B(w=self.ws(0), N=self.N, IDc=IDc, IDm=self.IDm, Rm=Rm, Proof=self.proofs(0))
+        message = Message_to_B(self.ws(0), self.N, IDc, self.IDm, Rm, self.proofs(0))
         msg = pickle.dumps(message)
-        self.ws.pop(0)
-        self.proofs.pop(0)
-        print(msg)
+        print("teraz wyślij")
 
     def checkHash(self, w, ans, IDc, hash):
         digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
         digest.update(bytes(str(w) + str(IDc) + str(self.Km) + str(self.Rm) + str(ans), 'utf8'))
         hashed = digest.finalize()
         if hash == hashed:
+            self.ws.pop(0)
+            self.proofs.pop(0)
             return True
         else:
             return False
@@ -102,15 +124,20 @@ class Merchant:
             print("Pieniądze przesłane")
 
     def send_confirmation(self):
+        digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+        digest.update(bytes(str(self.w(0)) + str(self.N) + str(self.Km), 'utf8'))
+        hashed = digest.finalize()
+        mesage = Confirmation_message(self.w(0), self.N, self.IDm, hashed)
+        print("tutaj wysyłanie")
 
 
 class Main:
-    state = "prepaid"
+    state = "wait for c"
     IDc = 0
     n = 10
     server = Server()
     server.listen()
-    if state == "prepaid":
+    if state == "wait for c":
         state = "wait for b"
     elif state == "wait for b":
         state = "micropayment"
