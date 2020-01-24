@@ -24,7 +24,7 @@ class Network:
     def wait_for_merchant(self, merchant, client):
         print('Waiting for merchant')
         while(not merchant.checkPaymentInitialisation(self.receive(), client)):
-            print('TRANZAKCJA ZAKOŃCZONA')
+            print('TRANSAKCJA ZAKOŃCZONA')
 
 
 

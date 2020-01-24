@@ -22,6 +22,11 @@ class Network:
         self.sock.connect((self.HOST, self.BANK_PORT))
         self.sock.send(msg)
 
+    def send_to_m(self, msg):
+        self.sock.connect((self.HOST, self.MERCHANT_PORT))
+        self.sock.send(msg)
+
+
 class Server:
     network = Network()
 
@@ -31,6 +36,9 @@ class Server:
     def listen(self, msg):
         self.network.send(msg)
         return self.network.receive()
+
+    def send_to_m(self, msg):
+        self.network.send_to_m(msg)
 
 
 class AuthReq:
@@ -128,21 +136,24 @@ class Client:
     def send_w_to_merchant(self, i, IDm, n):
         w = self.token
         for x in range(n - i):
-            w = self.hashW(w)
+             w = self.hashW(w)
 
         digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
         digest.update(bytes(str(w) + str(IDm) + str(self.Kc)))
         hashed = digest.finalize()
 
-        msg = ThirdMessage(w, self.N, hashed)
-        pickle.dumps(msg)
+        message = ThirdMessage(w, self.N, hashed)
+        msg = pickle.dumps(message)
 
 
 
 class Main:
+    n=100
     server = Server()
     client = Client()
     client.get_token_from_b(server.listen(client.send_first_message_to_b()))
+    for i in range(n+1):
+        server.send_to_m(client.send_w_to_merchant())
 
 
 Main()
