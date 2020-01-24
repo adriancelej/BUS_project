@@ -18,6 +18,7 @@ class Network:
 
     def receive(self):
         conn, address = self.sock.accept()
+        prov("Dostałem")
         return conn
 
     def receive_from_b(self):
@@ -159,10 +160,13 @@ class Main:
     server = Server()
     merchant = Merchant()
     for i in range(n+1):
-        merchant.get_w_and_proof(server.listen())
+        merchant.get_w_and_proof(server.listen().recv(1024))
+    print("Otrzymałem w")
     for i in range(n):
         merchant.get_response_from_b(server.send_w(merchant.send_w0_to_b()))
+    print("Wysłano w")
     merchant.check_response(server.send_w(merchant.send_confirmation()))
+    print("Transakcja zakonczona pomyslnie")
 
 
 

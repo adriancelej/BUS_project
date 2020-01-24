@@ -78,6 +78,7 @@ class Client:
     IDc = 123456789
     Oc = 987456321
     Kc = b'ae!r@s9*5gy^&j8l'
+    token = None
 
     def get_order_number(self):
         self.Oc=self.Oc+1
@@ -119,10 +120,10 @@ class Client:
             pass
 
         print('Numer seryjny: ' + str(msg.N))
-        tk = Token_RT()
         tk = pickle.loads(decrypted)
         print('Token: ' + str(binascii.hexlify(tk.encrypted_Token)))
         print('Otrzymany hash: ' + str(binascii.hexlify(msg.hash)))
+        self.token = tk.encrypted_Token
 
         if self.checkHash(tk.encrypted_Token, msg.N, msg.hash):
             print("Klient wysłał pieniądze")
@@ -139,7 +140,7 @@ class Client:
              w = self.hashW(w)
 
         digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
-        digest.update(bytes(str(w) + str(IDm) + str(self.Kc)))
+        digest.update(bytes(str(w) + str(IDm) + str(self.Kc)), 'utf8')
         hashed = digest.finalize()
 
         message = ThirdMessage(w, self.N, hashed)
