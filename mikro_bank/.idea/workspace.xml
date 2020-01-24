@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f4774d87-ed29-48c9-b138-2afb25faa251" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/mikro_bank.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/mikro_bank.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../mikro_client/.idea/mikro_client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../mikro_client/.idea/mikro_client.iml" afterDir="false" />
@@ -33,11 +35,11 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../mikro_client" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager">
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.main">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="mikro_bank" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -49,7 +51,6 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -59,6 +60,31 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="venv" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="mikro_bank" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\admina\Desktop\Uczelnia\SEM_6\BUS\projekt\mikro_bank\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.venv" />
+      <item itemvalue="Python.main" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
@@ -97,22 +123,42 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state width="1317" height="251" key="GridCell.Tab.0.bottom" timestamp="1579797839665">
-      <screen x="-1920" y="0" width="1920" height="1040" />
+    <state x="135" y="82" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1579899075305">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="135" y="82" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1579899075305" />
+    <state x="419" y="81" key="#main" timestamp="1579897897051">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="419" y="81" key="#main/0.0.1536.824@0.0.1536.824" timestamp="1579897897051" />
+    <state x="481" y="188" key="FileChooserDialogImpl" timestamp="1579899066138">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="481" y="188" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1579899066138" />
+    <state width="1380" height="230" key="GridCell.Tab.0.bottom" timestamp="1579899094139">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1317" height="251" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1579797839665" />
-    <state width="1317" height="251" key="GridCell.Tab.0.center" timestamp="1579797839665">
-      <screen x="-1920" y="0" width="1920" height="1040" />
+    <state width="1380" height="230" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1579899094139" />
+    <state width="1380" height="230" key="GridCell.Tab.0.center" timestamp="1579899094138">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1317" height="251" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1579797839665" />
-    <state width="1317" height="251" key="GridCell.Tab.0.left" timestamp="1579797839665">
-      <screen x="-1920" y="0" width="1920" height="1040" />
+    <state width="1380" height="230" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1579899094138" />
+    <state width="1380" height="230" key="GridCell.Tab.0.left" timestamp="1579899094138">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1317" height="251" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1579797839665" />
-    <state width="1317" height="251" key="GridCell.Tab.0.right" timestamp="1579797839665">
-      <screen x="-1920" y="0" width="1920" height="1040" />
+    <state width="1380" height="230" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1579899094138" />
+    <state width="1380" height="230" key="GridCell.Tab.0.right" timestamp="1579899094138">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1317" height="251" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1579797839665" />
+    <state width="1380" height="230" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1579899094138" />
+    <state x="157" y="110" key="SettingsEditor" timestamp="1579898666869">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="157" y="110" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1579898666869" />
     <state x="477" y="241" key="com.intellij.ide.util.TipDialog" timestamp="1579779197347">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
