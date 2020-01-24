@@ -10,29 +10,34 @@ import json
 
 class Network:
     HOST = 'localhost'  ##wszystko dzieje się na lokalnym hoście
-    BANK_PORT = 55100
-    CLIENT_PORT = 55200
     MERCHANT_PORT = 55300
+    BANK_PORT = 55100
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind((HOST, CLIENT_PORT))
+    sock.bind((HOST, MERCHANT_PORT))
     sock.listen()
 
     def receive(self):
         conn, address = self.sock.accept()
-        data = conn.recv(1024)
-        return data
+        return conn
+
+    def receive_from_b(self):
+        return self.sock.recv(1024)
+
+    def send(self, msg):
+        self.sock.connect((self.HOST, self.BANK_PORT))
+        self.sock.send(msg)
 
 
 class Server:
     network = Network()
 
-    def proces_request(self, reqest):
-        print(reqest)
-        ##json.loads(reqest)
-
     def listen(self):
-        while (True):
-            self.proces_request(self.network.receive())
+        return self.network.receive()
+
+    def send_w(self):
+        self.network.send(msg)
+        return self.network.receive_from_b()
+
 
 
 class Message_from_client:
@@ -110,7 +115,7 @@ class Merchant:
     def send_w0_to_b(self, IDc):
         message = Message_to_B(self.ws(0), self.N, IDc, self.IDm, Rm, self.proofs(0))
         msg = pickle.dumps(message)
-        print("teraz wyślij")
+        return msg
 
     def checkHash(self, w, ans, IDc, hash):
         digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
@@ -149,17 +154,17 @@ class Merchant:
 
 
 class Main:
-    state = "wait for c"
     IDc = 0
-    n = 10
+    n = 100
     server = Server()
-    server.listen()
-    if state == "wait for c":
-        state = "wait for b"
-    elif state == "wait for b":
-        state = "micropayment"
-    else:
-        state = "prepaid"
+    merchant = Merchant()
+    for i in range(n+1):
+        merchant.get_w_and_proof(server.listen())
+    for i in range(n):
+        merchant.get_response_from_b(server.send_w(merchant.send_w0_to_b()))
+    merchant.check_response(server.send_w(merchant.send_confirmation()))
+
+
 
 
 Main()
