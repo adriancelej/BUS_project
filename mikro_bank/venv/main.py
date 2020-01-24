@@ -24,7 +24,9 @@ class Network:
     def wait_for_merchant(self, merchant, client):
         print('Waiting for merchant')
         while(not merchant.checkPaymentInitialisation(self.receive(), client)):
-            print('TRANSAKCJA ZAKOŃCZONA')
+            print('Moneta przekazana')
+        merchant.lastInformation(self.receive(), client)
+        print('Transakcja zakonczona')
 
 
 
@@ -207,15 +209,23 @@ class Merchant:
                     conn.send(pickle.dumps(ack))
                     client.n -= 1 ##zmniejsza liczbę monet
                     print('Pieniądze przetransferowane na konto sprzedawcy!!!')
-                    return True
+                    if client.n == 0:
+                        return True
+                    else:
+                        return False
             return False
 
         else:
             print('Client: ' + str(payment.IDc) + ' doesn`t exist!')
             return False
 
-    def lastInformation:
-
+    def lastInformation(self, conn, client):
+        info = LastInformation()
+        info = pickle.loads(conn.recv(1024))
+        if info.IDm == self.ID and info.Wn == client.lastToken:
+            if LastInformation.calculate_hash(info.Wn, info.N, self.Km) == info.hash:
+                last = LastInformationACK(info.Wn, self.Km)
+                conn.send(pickle.loads(last))
 
 class PaymentInitialisation:
     #Pierwsza wiadomość od Sprzedawcy do klienta
@@ -247,6 +257,30 @@ class PaymentInicialisationACK: ##5 wiadomość z artykułu
         digest.update(to_hash)
         hashed = digest.finalize()
         return hashed
+
+class LastInformation:
+    Wn = None
+    N = None
+    IDm = None
+    hash = None
+
+    def calculate_hash(wn, N, Km):
+        to_hash = bytes(str(wn) + str(N) + str(Km), 'utf8')
+        digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+        digest.update(to_hash)
+        return digest.finalize()
+
+class LastInformationACK:
+    Wn = None
+    hash = None
+
+    def __init__(self, Wn, Km):
+        self.Wn = Wn
+        to_hash = bytes(str(Wn) + str(Km), 'utf8')
+        digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+        digest.update(to_hash)
+        self.hash = digest.finalize()
+
 
 class Main:
     client = Client(123456789, 987456321, b'ae!r@s9*5gy^&j8l')
