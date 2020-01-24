@@ -23,7 +23,9 @@ class Network:
 
     def wait_for_merchant(self, merchant, client):
         print('Waiting for merchant')
-        merchant.checkPaymentInitialisation(self.receive(), client)
+        while(not merchant.checkPaymentInitialisation(self.receive(), client)):
+            print('TRANZAKCJA ZAKOŃCZONA')
+
 
 
 class Server:
@@ -34,7 +36,7 @@ class Server:
         auth = Autenticate()
         if(auth.auth(conn.recv(1024), client.getKey(), client.getOrder(), client.getID())):
             bank = Bank()
-            conn.send(bank.getSeconMessage(client, bank))
+            conn.send(bank.getSecondMessage(client, bank))
             conn.close()
 
     def listen(self, client):
@@ -68,7 +70,7 @@ class Bank:
         client.lastToken = encrypted_data
         return encrypted_data
 
-    def getSeconMessage(self, client, bank):
+    def getSecondMessage(self, client, bank):
         token_rt = Token_RT(bank, client)
         encrypted_token_rt, enc_token = token_rt.getToken_RT(bank, client)
         order = client.getOrder() + 1
@@ -156,12 +158,13 @@ class Client:
     order_num = 0
     client_key = b'0'
     lastToken = None
+    n = 100 #liczba monet
 
     def __init__(self, id, ord_num, key):
         self.ID_client = id
         self.order_num = ord_num
         self.client_key =key
-    
+
     def getKey(self):
         return self.client_key
 
@@ -176,14 +179,14 @@ class Merchant:
     ID = None #id sprzedawcy
     Km = None #klucz sprzedawcy
     def __init__(self, id, km):
-        ID = id
-        Km = km
+        self.ID = id
+        self.Km = km
 
     def checkPaymentInitialisation(self, conn, client):
         print('Incoming merchant request')
         payment = PaymentInitialisation()
         payment = pickle.loads(conn.recv(1024))
-        if client.getID() == payment.IDc:
+        if client.getID() == payment.IDc and self.ID == payment.IDm:
             print('Merchant: ' + str(payment.IDm) + ' requested payment from client: ' + str(payment.IDc))
             to_hash = bytes(str(payment.w0) + str(payment.IDm) + str(client.client_key), 'utf8')
             digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
@@ -192,8 +195,27 @@ class Merchant:
             if hased == payment.hash_w0_IDm_Kc:
                 print('Received and calculated hash are equals')
 
+                to_hash = bytes(client.lastToken)
+                for i in range(0, client.n):
+                    digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+                    digest.update(to_hash)
+                    hashed = digest.finalize()
+                    to_hash = hashed
+
+                if payment.w0 == hashed:
+                    ack = PaymentInicialisationACK(payment.w0, client.getID(), self.ID, True, PaymentInicialisationACK.get_hash(payment.w0, client.getID(), self.Km, payment.Rm, True))
+                    conn.send(pickle.dumps(ack))
+                    client.n -= 1 ##zmniejsza liczbę monet
+                    print('Pieniądze przetransferowane na konto sprzedawcy!!!')
+                    return True
+            return False
+
         else:
             print('Client: ' + str(payment.IDc) + ' doesn`t exist!')
+            return False
+
+    def lastInformation:
+
 
 class PaymentInitialisation:
     #Pierwsza wiadomość od Sprzedawcy do klienta
@@ -204,6 +226,27 @@ class PaymentInitialisation:
     Rm = None #losowa liczba
     hash_w0_IDm_Kc = None #SHA256 z w0, IDm i Kc
 
+
+class PaymentInicialisationACK: ##5 wiadomość z artykułu
+    w0 = None
+    IDc = None
+    IDm = None
+    yes = None
+    hash = None
+
+    def __init__(self, w, idc, idm, y, hash):
+        self.w0 = w
+        self.IDc = idc
+        self.IDm = idm
+        self.yes = y
+        self.hash = hash
+
+    def get_hash(w0, IDc, Km, Rm, yes):
+        to_hash = bytes(str(w0) + str(IDc) + str(Km) + str(Rm) + str(yes), 'utf8')
+        digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+        digest.update(to_hash)
+        hashed = digest.finalize()
+        return hashed
 
 class Main:
     client = Client(123456789, 987456321, b'ae!r@s9*5gy^&j8l')
