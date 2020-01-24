@@ -144,16 +144,20 @@ class Client:
 
         message = ThirdMessage(w, self.N, hashed)
         msg = pickle.dumps(message)
+        print("Przygotowano W")
+        return msg
 
 
 
 class Main:
     n=100
+    IDm=0
     server = Server()
     client = Client()
     client.get_token_from_b(server.listen(client.send_first_message_to_b()))
     for i in range(n+1):
-        server.send_to_m(client.send_w_to_merchant())
+        print("Start")
+        server.send_to_m(client.send_w_to_merchant(i, IDm, n))
 
 
 Main()
