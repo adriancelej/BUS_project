@@ -87,6 +87,11 @@ class Confirmation_message:
         self.hash = hash
 
 
+class Confirmation_response:
+    w = None
+    hash = None
+
+
 class Merchant:
     IDm = 0
     Km = None
@@ -129,6 +134,18 @@ class Merchant:
         hashed = digest.finalize()
         mesage = Confirmation_message(self.w(0), self.N, self.IDm, hashed)
         print("tutaj wysyłanie")
+
+    def check_response(self, message):
+        msg = pickle.loads(message)
+        digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+        digest.update(bytes(str(message.w) + str(self.Km), 'utf8'))
+        hashed = digest.finalize()
+        if msg.hash == hashed:
+            print("Transakcja zakończona pomyślnie")
+            self.N = None
+            self.ws = None
+            self.proofs = None
+            self.Rm = None
 
 
 class Main:
