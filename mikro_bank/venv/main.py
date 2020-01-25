@@ -194,7 +194,7 @@ class Merchant:
             digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
             digest.update(to_hash)
             hashed = digest.finalize()
-            if hased == payment.hash_w0_IDm_Kc:
+            if hashed == payment.hash_w0_IDm_Kc:
                 print('Received and calculated hash are equals')
 
                 to_hash = bytes(client.lastToken)
@@ -288,7 +288,5 @@ class Main:
     server.listen(client)
     merchant = Merchant(214365870, b'$#]a/!oq61bh*^%`')
     server.listen_merchant(merchant, client)
-
-
 
 Main()
